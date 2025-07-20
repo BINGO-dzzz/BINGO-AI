@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Chatbot</title>
+</head>
+<body>
+    <h1>مرحبا بك في منصة الذكاء الاصطناعي</h1>
+    <input type="text" id="question" placeholder="اكتب سؤالك هنا">
+    <button onclick="askQuestion()">إرسال</button>
+    <p id="response"></p>
+
+    <script>
+        async function askQuestion() {
+            const question = document.getElementById("question").value;
+            const responseElement = document.getElementById("response");
+
+            const response = await fetch("/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question: question })
+            });
+
+            const data = await response.json();
+            if (data.answer) {
+                responseElement.textContent = data.answer;
+            } else {
+                responseElement.textContent = "خطأ: " + data.error;
+            }
+        }
+    </script>
+</body>
+</html>
